@@ -7,12 +7,12 @@ public class NoTrainerGymApp {
     // MySQL connection variables
     static final String DB_URL = "jdbc:mysql://localhost:3306/notrainer_gym";
     static final String DB_USER = "root"; // Your MySQL username
-    static final String DB_PASS = "geezer4294"; // Your MySQL password
+    static final String DB_PASS = "root"; // Your MySQL password
 
     private JFrame frame;
     private CardLayout cardLayout;
     private JPanel mainPanel;
-    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new NoTrainerGymApp().createAndShowGUI());
     }
@@ -38,7 +38,7 @@ public class NoTrainerGymApp {
         JPanel loginPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-        
+
         JLabel userLabel = new JLabel("Username:");
         JLabel passLabel = new JLabel("Password:");
         JTextField userField = new JTextField(20);
@@ -46,7 +46,7 @@ public class NoTrainerGymApp {
         JButton loginButton = new JButton("Login");
         JButton signUpButton = new JButton("Sign Up");
         JLabel messageLabel = new JLabel();
-        
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         loginPanel.add(userLabel, gbc);
@@ -66,7 +66,7 @@ public class NoTrainerGymApp {
         gbc.gridy = 3;
         gbc.gridwidth = 2;
         loginPanel.add(messageLabel, gbc);
-        
+
         loginButton.addActionListener(e -> {
             String username = userField.getText();
             String password = new String(passField.getPassword());
@@ -94,20 +94,13 @@ public class NoTrainerGymApp {
 
     private JPanel createUserPanel() {
         JPanel userPanel = new JPanel(new BorderLayout());
-        
+
         JLabel welcomeLabel = new JLabel("Welcome User!");
         JButton beginnerButton = new JButton("Beginner");
         JButton trainedButton = new JButton("Trained");
-        JPanel exercisePanel = new JPanel(new CardLayout());
 
-        JPanel beginnerExercises = createExercisesPanel();
-        JPanel trainedExercises = createExercisesPanel();
-
-        exercisePanel.add(beginnerExercises, "BeginnerExercises");
-        exercisePanel.add(trainedExercises, "TrainedExercises");
-
-        beginnerButton.addActionListener(e -> ((CardLayout) exercisePanel.getLayout()).show(exercisePanel, "BeginnerExercises"));
-        trainedButton.addActionListener(e -> ((CardLayout) exercisePanel.getLayout()).show(exercisePanel, "TrainedExercises"));
+        beginnerButton.addActionListener(e -> showExercisesPanel("Beginner Exercises"));
+        trainedButton.addActionListener(e -> showExercisesPanel("Trained Exercises"));
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(beginnerButton);
@@ -115,38 +108,83 @@ public class NoTrainerGymApp {
 
         userPanel.add(welcomeLabel, BorderLayout.NORTH);
         userPanel.add(buttonPanel, BorderLayout.CENTER);
-        userPanel.add(exercisePanel, BorderLayout.SOUTH);
 
         return userPanel;
     }
 
-    private JPanel createAdminPanel() {
-        JPanel adminPanel = new JPanel(new BorderLayout());
-        JLabel adminLabel = new JLabel("Welcome Admin!");
-        adminPanel.add(adminLabel, BorderLayout.NORTH);
-        // Add more admin functionalities as needed
-        return adminPanel;
+    private void showExercisesPanel(String title) {
+        JFrame exercisesFrame = new JFrame(title);
+        exercisesFrame.setSize(800, 600);
+        exercisesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        exercisesFrame.setLayout(new BorderLayout());
+
+        JPanel exercisesPanel = createExercisesPanel();
+
+        exercisesFrame.add(exercisesPanel, BorderLayout.CENTER);
+        exercisesFrame.setVisible(true);
     }
 
     private JPanel createExercisesPanel() {
         JPanel exercisesPanel = new JPanel(new GridLayout(3, 2));
-        String[] exercises = {"Chest", "Shoulder", "Biceps", "Triceps", "Leg", "Calf", "Shrugs"};
+        String[] exercises = { "Chest", "Shoulder", "Biceps", "Triceps", "Leg", "Calf", "Shrugs" };
 
         for (String exercise : exercises) {
             JButton exerciseButton = new JButton(exercise);
-            exerciseButton.addActionListener(e -> showExerciseDetails(exercise));
+            exerciseButton.addActionListener(e -> showExerciseSubList(exercise));
             exercisesPanel.add(exerciseButton);
         }
 
         return exercisesPanel;
     }
 
+    private void showExerciseSubList(String exercise) {
+        JFrame subListFrame = new JFrame(exercise + " Exercises");
+        subListFrame.setSize(400, 400);
+        subListFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        subListFrame.setLayout(new GridLayout(5, 1));
+
+        // Example sub-list items, replace with actual exercises
+        String[] subListItems = { "Exercise 1", "Exercise 2", "Exercise 3", "Exercise 4", "Exercise 5" };
+        for (String item : subListItems) {
+            JButton itemButton = new JButton(item);
+            itemButton.addActionListener(e -> showExerciseDetails(item));
+            subListFrame.add(itemButton);
+        }
+
+        subListFrame.setVisible(true);
+    }
+
     private void showExerciseDetails(String exercise) {
         JFrame exerciseFrame = new JFrame(exercise);
         exerciseFrame.setSize(400, 400);
-        JLabel exerciseLabel = new JLabel(new ImageIcon("images/" + exercise.toLowerCase() + ".jpg")); // Ensure image paths are correct
+        exerciseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JLabel exerciseLabel = new JLabel(new ImageIcon("images/" + exercise.toLowerCase() + ".jpg")); // Ensure image
+        // paths are
+        // correct
         exerciseFrame.add(exerciseLabel);
         exerciseFrame.setVisible(true);
+    }
+
+    private JPanel createAdminPanel() {
+        JPanel adminPanel = new JPanel(new BorderLayout());
+        JLabel adminLabel = new JLabel("Welcome Admin!");
+        // adminLabel.setSize(200, 200);
+        adminPanel.add(adminLabel, BorderLayout.NORTH);
+        // calling manageusers()
+        JButton manageUsersButton = new JButton("Manage Users");
+        manageUsersButton.addActionListener(e -> manageUsers());
+        adminPanel.add(manageUsersButton, BorderLayout.CENTER);
+        return adminPanel;
+    }
+
+    private void manageUsers() {
+        JFrame manageUsersFrame = new JFrame("Manage Users");
+        manageUsersFrame.setSize(800, 600);
+        manageUsersFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Add user management functionalities here (to be added later)
+
+        manageUsersFrame.setVisible(true);
     }
 
     private boolean authenticateUser(String username, String password) {
@@ -159,7 +197,8 @@ public class NoTrainerGymApp {
 
     private boolean authenticate(String username, String password, String userType) {
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ? AND user_type = ?")) {
+                PreparedStatement ps = conn.prepareStatement(
+                        "SELECT * FROM users WHERE username = ? AND password = ? AND user_type = ?")) {
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, userType);
@@ -173,7 +212,8 @@ public class NoTrainerGymApp {
 
     private boolean signUpUser(String username, String password) {
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO users (username, password, user_type) VALUES (?, ?, ?)")) {
+                PreparedStatement ps = conn
+                        .prepareStatement("INSERT INTO users (username, password, user_type) VALUES (?, ?, ?)")) {
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, "user");
