@@ -48,6 +48,7 @@ public class NoTrainerGymApp {
 
         frame.add(mainPanel);
         cardLayout.show(mainPanel, "LoginPanel");
+        frame.setLocationRelativeTo(null); // Center the frame
         frame.setVisible(true);
     }
 
@@ -64,23 +65,41 @@ public class NoTrainerGymApp {
         JButton signUpButton = new JButton("Sign Up");
         JLabel messageLabel = new JLabel();
 
+        // Add SoloFit image to the login panel
+        ImageIcon logoIcon = new ImageIcon("images/SoloFit.png");
+        JLabel logoLabel = new JLabel(logoIcon);
+
         gbc.gridx = 0;
         gbc.gridy = 0;
-        loginPanel.add(userLabel, gbc);
-        gbc.gridx = 1;
-        loginPanel.add(userField, gbc);
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        loginPanel.add(logoLabel, gbc);
+
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.gridx = 0;
         gbc.gridy = 1;
-        loginPanel.add(passLabel, gbc);
+        loginPanel.add(userLabel, gbc);
+
         gbc.gridx = 1;
-        loginPanel.add(passField, gbc);
+        loginPanel.add(userField, gbc);
+
         gbc.gridx = 0;
         gbc.gridy = 2;
-        loginPanel.add(loginButton, gbc);
+        loginPanel.add(passLabel, gbc);
+
         gbc.gridx = 1;
-        loginPanel.add(signUpButton, gbc);
+        loginPanel.add(passField, gbc);
+
         gbc.gridx = 0;
         gbc.gridy = 3;
+        loginPanel.add(loginButton, gbc);
+
+        gbc.gridx = 1;
+        loginPanel.add(signUpButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         gbc.gridwidth = 2;
         loginPanel.add(messageLabel, gbc);
 
@@ -110,34 +129,37 @@ public class NoTrainerGymApp {
     }
 
     private JPanel createUserPanel() {
-        JPanel userPanel = new JPanel(new CardLayout());
-        JPanel welcomePanel = new JPanel(new BorderLayout());
-        JPanel exercisePanel = new JPanel(new BorderLayout());
+        JPanel userPanel = new JPanel(new BorderLayout());
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel welcomeLabel = new JLabel("Welcome User!");
+        JLabel welcomeLabel = new JLabel("Welcome", SwingConstants.CENTER);
+        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 50)); // Bigger letters
+
         JButton beginnerButton = new JButton("Beginner");
         JButton trainedButton = new JButton("Trained");
+
+        beginnerButton.setPreferredSize(new Dimension(200, 90)); // Increase button size
+        trainedButton.setPreferredSize(new Dimension(200, 90)); // Increase button size
 
         beginnerButton.addActionListener(e -> showExercisesPanel("Beginner Exercises"));
         trainedButton.addActionListener(e -> showExercisesPanel("Trained Exercises"));
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(beginnerButton);
-        buttonPanel.add(trainedButton);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        centerPanel.add(welcomeLabel, gbc);
 
-        welcomePanel.add(welcomeLabel, BorderLayout.NORTH);
-        welcomePanel.add(buttonPanel, BorderLayout.CENTER);
+        gbc.gridwidth = 1;
+        gbc.gridy = 1;
+        centerPanel.add(beginnerButton, gbc);
 
-        // Create exercise panel with a back button
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> ((CardLayout) userPanel.getLayout()).show(userPanel, "WelcomePanel"));
+        gbc.gridx = 1;
+        centerPanel.add(trainedButton, gbc);
 
-        exercisePanel.add(createExercisesPanel(), BorderLayout.CENTER);
-        exercisePanel.add(backButton, BorderLayout.SOUTH);
-
-        // Add both panels to the userPanel
-        userPanel.add(welcomePanel, "WelcomePanel");
-        userPanel.add(exercisePanel, "ExercisePanel");
+        userPanel.add(centerPanel, BorderLayout.CENTER);
 
         return userPanel;
     }
@@ -147,6 +169,7 @@ public class NoTrainerGymApp {
         exercisesFrame.setSize(800, 600);
         exercisesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         exercisesFrame.setLayout(new BorderLayout());
+        exercisesFrame.setLocationRelativeTo(null); // Center the frame
 
         JPanel exercisesPanel = createExercisesPanel();
 
@@ -177,6 +200,7 @@ public class NoTrainerGymApp {
         subListFrame.setSize(400, 400);
         subListFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         subListFrame.setLayout(new GridLayout(5, 1));
+        subListFrame.setLocationRelativeTo(null); // Center the frame
 
         // Get the sublist items for the selected exercise
         String[] subListItems = exerciseSubLists.getOrDefault(exercise, new String[]{});
@@ -194,6 +218,7 @@ public class NoTrainerGymApp {
         JFrame exerciseFrame = new JFrame(exercise);
         exerciseFrame.setSize(400, 400);
         exerciseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        exerciseFrame.setLocationRelativeTo(null); // Center the frame
 
         String imagePath = "images/default_image.gif"; // Default path
 
@@ -206,7 +231,7 @@ public class NoTrainerGymApp {
                 imagePath = "images/InclineDumbellPress.gif";
                 break;
             case "Cable Crossover":
-                imagePath = "images/CableCrossover.gif";
+                imagePath = "images/CableCrossOver.gif";
                 break;
             case "Chest Dip":
                 imagePath = "images/ChestDips.gif";
@@ -251,7 +276,7 @@ public class NoTrainerGymApp {
                 imagePath = "images/DumbbellShrug.gif";
                 break;
             case "Smith Machine Shrug":
-                imagePath = "images/SmithMachineShrug.jpeg";
+                imagePath = "images/SmithMachineShrug.gif";
                 break;
             case "Behind-the-Back Shrug":
                 imagePath = "images/BehindTheBack.gif";
@@ -304,91 +329,65 @@ public class NoTrainerGymApp {
             case "Single-Leg Calf Raise":
                 imagePath = "images/SingleLegCalfRaise.gif";
                 break;
-            default:
-                imagePath = "images/default_image.gif";
+            // Add more cases as needed
         }
 
-        ImageIcon exerciseIcon = new ImageIcon(imagePath);
+        ImageIcon imageIcon = new ImageIcon(imagePath);
+        JLabel imageLabel = new JLabel(imageIcon);
 
-        // If the image is not found, show a default image
-        if (exerciseIcon.getIconWidth() == -1) {
-            exerciseIcon = new ImageIcon("images/default_image.gif");
-        }
-
-        JLabel exerciseLabel = new JLabel(exerciseIcon);
-        exerciseFrame.add(exerciseLabel);
+        exerciseFrame.add(imageLabel);
         exerciseFrame.setVisible(true);
     }
 
     private JPanel createAdminPanel() {
-        JPanel adminPanel = new JPanel(new BorderLayout());
-        JLabel adminLabel = new JLabel("Welcome Admin!");
-        adminPanel.add(adminLabel, BorderLayout.NORTH);
-        JButton manageUsersButton = new JButton("Manage Users");
-        manageUsersButton.addActionListener(e -> manageUsers());
-        adminPanel.add(manageUsersButton, BorderLayout.CENTER);
+        JPanel adminPanel = new JPanel();
+        adminPanel.add(new JLabel("Admin Panel"));
+        // Add admin functionalities here
         return adminPanel;
     }
 
-    private void manageUsers() {
-        JFrame manageUsersFrame = new JFrame("Manage Users");
-        manageUsersFrame.setSize(800, 600);
-        manageUsersFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        manageUsersFrame.setLayout(new BorderLayout());
-
-        // Example content for user management (can be replaced with real user data)
-        JTextArea usersTextArea = new JTextArea();
-        usersTextArea.setText("User1\nUser2\nUser3");
-        manageUsersFrame.add(new JScrollPane(usersTextArea), BorderLayout.CENTER);
-
-        manageUsersFrame.setVisible(true);
-    }
-
     private boolean authenticateUser(String username, String password) {
-        // Replace with actual database authentication logic
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
-            String query = "SELECT * FROM users WHERE username=? AND password=?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, username);
-                stmt.setString(2, password);
-                ResultSet rs = stmt.executeQuery();
-                return rs.next();
-            }
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?")) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     private boolean authenticateAdmin(String username, String password) {
-        // Replace with actual database authentication logic
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
-            String query = "SELECT * FROM admins WHERE username=? AND password=?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, username);
-                stmt.setString(2, password);
-                ResultSet rs = stmt.executeQuery();
-                return rs.next();
-            }
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM admins WHERE username = ? AND password = ?")) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     private boolean signUpUser(String username, String password) {
-        // Replace with actual database sign-up logic
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
-            String query = "INSERT INTO users (username, password) VALUES (?, ?)";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, username);
-                stmt.setString(2, password);
-                int rowsAffected = stmt.executeUpdate();
-                return rowsAffected > 0;
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+             PreparedStatement checkStatement = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
+             PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)")) {
+            checkStatement.setString(1, username);
+            ResultSet resultSet = checkStatement.executeQuery();
+            if (resultSet.next()) {
+                return false; // Username already exists
             }
+            insertStatement.setString(1, username);
+            insertStatement.setString(2, password);
+            insertStatement.executeUpdate();
+            return true; // Sign up successful
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 }
