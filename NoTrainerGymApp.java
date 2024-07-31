@@ -9,7 +9,7 @@ public class NoTrainerGymApp {
     // MySQL connection variables
     static final String DB_URL = "jdbc:mysql://localhost:3306/notrainer_gym";
     static final String DB_USER = "root"; // Your MySQL username
-    static final String DB_PASS = "geezer4294"; // Your MySQL password
+    static final String DB_PASS = "root"; // Your MySQL password
 
     private JFrame frame;
     private CardLayout cardLayout;
@@ -25,13 +25,20 @@ public class NoTrainerGymApp {
     public NoTrainerGymApp() {
         // Initialize exercise sublists
         exerciseSubLists = new HashMap<>();
-        exerciseSubLists.put("Chest", new String[]{"Bench Press", "Incline Dumbbell Press", "Cable Crossover", "Chest Dip", "Pec Deck"});
-        exerciseSubLists.put("Shoulder", new String[]{"Shoulder Press", "Lateral Raise", "Front Raise", "Reverse Fly", "Arnold Press"});
-        exerciseSubLists.put("Leg", new String[]{"Squat", "Leg Press", "Leg Extension", "Hamstring Curl", "Calf Raise"});
-        exerciseSubLists.put("Shrugs", new String[]{"Barbell Shrug", "Dumbbell Shrug", "Smith Machine Shrug", "Behind-the-Back Shrug", "Trap Bar Shrug"});
-        exerciseSubLists.put("Biceps", new String[]{"Bicep Curl", "Hammer Curl", "Preacher Curl", "Concentration Curl", "Cable Curl"});
-        exerciseSubLists.put("Triceps", new String[]{"Tricep Extension", "Skull Crusher", "Tricep Dip", "Close Grip Bench Press", "Cable Pushdown"});
-        exerciseSubLists.put("Calf", new String[]{"Standing Calf Raise", "Seated Calf Raise", "Leg Press Calf Raise", "Smith Machine Calf Raise", "Single-Leg Calf Raise"});
+        exerciseSubLists.put("Chest",
+                new String[] { "Bench Press", "Incline Dumbbell Press", "Cable Crossover", "Chest Dip", "Pec Deck" });
+        exerciseSubLists.put("Shoulder",
+                new String[] { "Shoulder Press", "Lateral Raise", "Front Raise", "Reverse Fly", "Arnold Press" });
+        exerciseSubLists.put("Leg",
+                new String[] { "Squat", "Leg Press", "Leg Extension", "Hamstring Curl", "Calf Raise" });
+        exerciseSubLists.put("Shrugs", new String[] { "Barbell Shrug", "Dumbbell Shrug", "Smith Machine Shrug",
+                "Behind-the-Back Shrug", "Trap Bar Shrug" });
+        exerciseSubLists.put("Biceps",
+                new String[] { "Bicep Curl", "Hammer Curl", "Preacher Curl", "Concentration Curl", "Cable Curl" });
+        exerciseSubLists.put("Triceps", new String[] { "Tricep Extension", "Skull Crusher", "Tricep Dip",
+                "Close Grip Bench Press", "Cable Pushdown" });
+        exerciseSubLists.put("Calf", new String[] { "Standing Calf Raise", "Seated Calf Raise", "Leg Press Calf Raise",
+                "Smith Machine Calf Raise", "Single-Leg Calf Raise" });
     }
 
     public void createAndShowGUI() {
@@ -53,10 +60,24 @@ public class NoTrainerGymApp {
     }
 
     private JPanel createLoginPanel() {
-        JPanel loginPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        // Create a JLayeredPane to hold both the background image and the components
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(800, 600));
 
+        // Load the background image
+        ImageIcon backgroundIcon = new ImageIcon("images/SoloFit.png");
+        JLabel backgroundLabel = new JLabel(backgroundIcon);
+        backgroundLabel.setBounds(0, 0, 800, 600); // Initial bounds
+
+        // Create a panel for the form elements
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setOpaque(false); // Make the panel transparent
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        // Form components
         JLabel userLabel = new JLabel("Username:");
         JLabel passLabel = new JLabel("Password:");
         JTextField userField = new JTextField(20);
@@ -65,44 +86,62 @@ public class NoTrainerGymApp {
         JButton signUpButton = new JButton("Sign Up");
         JLabel messageLabel = new JLabel();
 
-        // Add SoloFit image to the login panel
-        ImageIcon logoIcon = new ImageIcon("images/SoloFit.png");
-        JLabel logoLabel = new JLabel(logoIcon);
-
+        // Adding components to the formPanel
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        loginPanel.add(logoLabel, gbc);
-
-        gbc.gridwidth = 1;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        loginPanel.add(userLabel, gbc);
+        formPanel.add(userLabel, gbc);
 
         gbc.gridx = 1;
-        loginPanel.add(userField, gbc);
+        formPanel.add(userField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        formPanel.add(passLabel, gbc);
+
+        gbc.gridx = 1;
+        formPanel.add(passField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        loginPanel.add(passLabel, gbc);
+        formPanel.add(loginButton, gbc);
 
         gbc.gridx = 1;
-        loginPanel.add(passField, gbc);
+        formPanel.add(signUpButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        loginPanel.add(loginButton, gbc);
-
-        gbc.gridx = 1;
-        loginPanel.add(signUpButton, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 4;
         gbc.gridwidth = 2;
-        loginPanel.add(messageLabel, gbc);
+        formPanel.add(messageLabel, gbc);
 
+        // Add components to the layered pane
+        layeredPane.add(backgroundLabel, Integer.valueOf(0));
+        layeredPane.add(formPanel, Integer.valueOf(1));
+
+        // Add a ComponentListener to handle resizing
+        layeredPane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                Dimension size = layeredPane.getSize();
+                Image scaledImage = backgroundIcon.getImage().getScaledInstance(size.width, size.height,
+                        Image.SCALE_SMOOTH);
+                backgroundLabel.setIcon(new ImageIcon(scaledImage));
+                backgroundLabel.setSize(size);
+
+                formPanel.setSize(size);
+                int formWidth = 400; // Width of form components
+                int formHeight = formPanel.getPreferredSize().height; // Dynamic height based on content
+                int formX = (size.width - formWidth) / 2;
+                int formY = (int) (size.height * 0.7); // Position form elements near the bottom
+
+                formPanel.setBounds(formX, formY, formWidth, formHeight);
+            }
+        });
+
+        // Create a panel to hold the layered pane
+        JPanel backgroundPanel = new JPanel(new BorderLayout());
+        backgroundPanel.add(layeredPane, BorderLayout.CENTER);
+
+        // Action listeners
         loginButton.addActionListener(e -> {
             String username = userField.getText();
             String password = new String(passField.getPassword());
@@ -125,15 +164,28 @@ public class NoTrainerGymApp {
             }
         });
 
-        return loginPanel;
+        return backgroundPanel;
     }
 
     private JPanel createUserPanel() {
-        JPanel userPanel = new JPanel(new BorderLayout());
-        JPanel centerPanel = new JPanel(new GridBagLayout());
+        // Create a JLayeredPane to hold both the background image and the components
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(800, 600));
+
+        // Load the background image
+        ImageIcon backgroundIcon = new ImageIcon("images/well.jpg");
+        JLabel backgroundLabel = new JLabel(backgroundIcon);
+        backgroundLabel.setBounds(0, 0, 800, 600); // Initial bounds
+
+        // Create a panel for the content elements
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        contentPanel.setOpaque(false); // Make the panel transparent
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
 
+        // Content components
         JLabel welcomeLabel = new JLabel("Welcome", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Serif", Font.BOLD, 50)); // Bigger letters
 
@@ -143,23 +195,50 @@ public class NoTrainerGymApp {
         beginnerButton.setPreferredSize(new Dimension(200, 90)); // Increase button size
         trainedButton.setPreferredSize(new Dimension(200, 90)); // Increase button size
 
+        // Action listeners for buttons
         beginnerButton.addActionListener(e -> showExercisesPanel("Beginner Exercises"));
         trainedButton.addActionListener(e -> showExercisesPanel("Trained Exercises"));
 
+        // Adding components to the contentPanel
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        centerPanel.add(welcomeLabel, gbc);
+        contentPanel.add(welcomeLabel, gbc);
 
         gbc.gridwidth = 1;
         gbc.gridy = 1;
-        centerPanel.add(beginnerButton, gbc);
+        contentPanel.add(beginnerButton, gbc);
 
         gbc.gridx = 1;
-        centerPanel.add(trainedButton, gbc);
+        contentPanel.add(trainedButton, gbc);
 
-        userPanel.add(centerPanel, BorderLayout.CENTER);
+        // Add components to the layered pane
+        layeredPane.add(backgroundLabel, Integer.valueOf(0));
+        layeredPane.add(contentPanel, Integer.valueOf(1));
+
+        // Add a ComponentListener to handle resizing
+        layeredPane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                Dimension size = layeredPane.getSize();
+                Image scaledImage = backgroundIcon.getImage().getScaledInstance(size.width, size.height,
+                        Image.SCALE_SMOOTH);
+                backgroundLabel.setIcon(new ImageIcon(scaledImage));
+                backgroundLabel.setSize(size);
+
+                contentPanel.setSize(size);
+                int contentWidth = 600; // Width of content components
+                int contentHeight = contentPanel.getPreferredSize().height; // Dynamic height based on content
+                int contentX = (size.width - contentWidth) / 2;
+                int contentY = (size.height - contentHeight) / 2;
+
+                contentPanel.setBounds(contentX, contentY, contentWidth, contentHeight);
+            }
+        });
+
+        // Create a panel to hold the layered pane
+        JPanel userPanel = new JPanel(new BorderLayout());
+        userPanel.add(layeredPane, BorderLayout.CENTER);
 
         return userPanel;
     }
@@ -184,7 +263,7 @@ public class NoTrainerGymApp {
 
     private JPanel createExercisesPanel() {
         JPanel exercisesPanel = new JPanel(new GridLayout(3, 2));
-        String[] exercises = {"Chest", "Shoulder", "Biceps", "Triceps", "Leg", "Calf", "Shrugs"};
+        String[] exercises = { "Chest", "Shoulder", "Biceps", "Triceps", "Leg", "Calf", "Shrugs" };
 
         for (String exercise : exercises) {
             JButton exerciseButton = new JButton(exercise);
@@ -203,7 +282,7 @@ public class NoTrainerGymApp {
         subListFrame.setLocationRelativeTo(null); // Center the frame
 
         // Get the sublist items for the selected exercise
-        String[] subListItems = exerciseSubLists.getOrDefault(exercise, new String[]{});
+        String[] subListItems = exerciseSubLists.getOrDefault(exercise, new String[] {});
 
         for (String item : subListItems) {
             JButton itemButton = new JButton(item);
@@ -222,7 +301,8 @@ public class NoTrainerGymApp {
 
         String imagePath = "images/default_image.gif"; // Default path
 
-        // Special cases for exercises under Chest, Shoulder, Leg, Shrugs, Biceps, Triceps, and Calf categories
+        // Special cases for exercises under Chest, Shoulder, Leg, Shrugs, Biceps,
+        // Triceps, and Calf categories
         switch (exercise) {
             case "Bench Press":
                 imagePath = "images/BenchPress.gif";
@@ -276,13 +356,13 @@ public class NoTrainerGymApp {
                 imagePath = "images/DumbbellShrug.gif";
                 break;
             case "Smith Machine Shrug":
-                imagePath = "images/SmithMachineShrug.gif";
+                imagePath = "images/SmithMachineShrug.jpg";
                 break;
             case "Behind-the-Back Shrug":
                 imagePath = "images/BehindTheBack.gif";
                 break;
             case "Trap Bar Shrug":
-                imagePath = "images/TrapBarShrug.gif";
+                imagePath = "images/TrapBarShrug.png";
                 break;
             case "Bicep Curl":
                 imagePath = "images/BicepCurl.gif";
@@ -348,7 +428,8 @@ public class NoTrainerGymApp {
 
     private boolean authenticateUser(String username, String password) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?")) {
+                PreparedStatement preparedStatement = connection
+                        .prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?")) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -361,7 +442,8 @@ public class NoTrainerGymApp {
 
     private boolean authenticateAdmin(String username, String password) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM admins WHERE username = ? AND password = ?")) {
+                PreparedStatement preparedStatement = connection
+                        .prepareStatement("SELECT * FROM admins WHERE username = ? AND password = ?")) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -374,8 +456,10 @@ public class NoTrainerGymApp {
 
     private boolean signUpUser(String username, String password) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-             PreparedStatement checkStatement = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
-             PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)")) {
+                PreparedStatement checkStatement = connection
+                        .prepareStatement("SELECT * FROM users WHERE username = ?");
+                PreparedStatement insertStatement = connection
+                        .prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)")) {
             checkStatement.setString(1, username);
             ResultSet resultSet = checkStatement.executeQuery();
             if (resultSet.next()) {
