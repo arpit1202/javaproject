@@ -47,6 +47,7 @@ public class NoTrainerGymApp {
         frame = new JFrame("NoTrainer Gym");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
+        frame.setResizable(false);
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -88,6 +89,17 @@ public class NoTrainerGymApp {
         JButton signUpButton = new JButton("Sign Up");
         JLabel messageLabel = new JLabel();
 
+    //seting color
+    userLabel.setForeground(Color.WHITE);
+    passLabel.setForeground(Color.WHITE);
+    messageLabel.setForeground(Color.WHITE);
+
+//size of button
+    Dimension buttonSize = new Dimension(90, 30); // Adjust size as needed
+    loginButton.setPreferredSize(buttonSize);
+    signUpButton.setPreferredSize(buttonSize);
+
+
         // Adding components to the formPanel
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -103,11 +115,12 @@ public class NoTrainerGymApp {
         gbc.gridx = 1;
         formPanel.add(passField, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridx = 1;
+        gbc.gridy = -2;
         formPanel.add(loginButton, gbc);
 
         gbc.gridx = 1;
+        gbc.gridy =-4;
         formPanel.add(signUpButton, gbc);
 
         gbc.gridx = 0;
@@ -268,24 +281,29 @@ public class NoTrainerGymApp {
         exercisesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         exercisesFrame.setLayout(new BorderLayout());
         exercisesFrame.setLocationRelativeTo(null); // Center the frame
-
+        exercisesFrame.setResizable(false);
+    
         JPanel exercisesPanel = createExercisesPanel();
-
+    
+        // Set background color of the exercisesPanel to gold
+        Color goldenColor = new Color(255, 215, 0);
+        // exercisesPanel.setBackground(goldenColor);
+    
         // Add back button to close the exercises frame and return to the user panel
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> exercisesFrame.dispose());
-
-        Color goldenColor = new Color(255, 215, 0); // Golden color
+    
+        // Set color of back button
+        Color buttonTextColor = Color.BLACK;
         backButton.setForeground(goldenColor);
         backButton.setOpaque(true); // Make sure the background is visible
+        backButton.setBackground(buttonTextColor);
     
-        Color textColor = Color.BLACK;
-        backButton.setBackground(textColor);
-
         exercisesFrame.add(exercisesPanel, BorderLayout.CENTER);
         exercisesFrame.add(backButton, BorderLayout.SOUTH);
         exercisesFrame.setVisible(true);
     }
+    
 
     private JPanel createExercisesPanel() {
         JPanel exercisesPanel = new JPanel(new GridLayout(3, 2));
@@ -297,6 +315,7 @@ public class NoTrainerGymApp {
             
             JButton exerciseButton = new JButton();
             exerciseButton.setPreferredSize(new Dimension(200, 90)); // Set the size of the button
+            
     
             // Determine the image path based on the exercise
             String imagePath = "";
@@ -378,6 +397,10 @@ public class NoTrainerGymApp {
         subListFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         subListFrame.setLayout(new GridLayout(5, 1));
         subListFrame.setLocationRelativeTo(null); // Center the frame
+        subListFrame.setResizable(false);
+
+        
+        
 
         // Get the sublist items for the selected exercise
         String[] subListItems = exerciseSubLists.getOrDefault(exercise, new String[] {});
@@ -386,6 +409,20 @@ public class NoTrainerGymApp {
             JButton itemButton = new JButton(item);
             itemButton.addActionListener(e -> showExerciseDetails(item));
             subListFrame.add(itemButton);
+
+            //making button item of list of exercise big
+            Font buttonFont = new Font("Serif", Font.BOLD, 24); 
+        itemButton.setFont(buttonFont);
+
+        //CHANGING COLOR TO GOLDEN  
+        Color goldenColor = new Color(255, 215, 0); // Golden color
+        itemButton.setBackground(goldenColor);
+         // Make sure the background is visible
+         itemButton.setOpaque(true);
+
+        Color textColor = Color.BLACK;
+        itemButton.setForeground(textColor);
+        
         }
 
         subListFrame.setVisible(true);
@@ -393,12 +430,28 @@ public class NoTrainerGymApp {
 
     private void showExerciseDetails(String exercise) {
         JFrame exerciseFrame = new JFrame(exercise);
-        exerciseFrame.setSize(400, 400);
+        exerciseFrame.setSize(800, 600);
         exerciseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         exerciseFrame.setLocationRelativeTo(null); // Center the frame
+        exerciseFrame.setResizable(false);
+        
+        // Create the Back button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> exerciseFrame.dispose());
+        
 
+        Color goldenColor = new Color(255, 215, 0); // Golden color
+        backButton.setForeground(goldenColor);
+        backButton.setOpaque(true); // Make sure the background is visible
+    
+        Color textColor = Color.BLACK;
+        backButton.setBackground(textColor);
+    
+        // Set up the layout
+        exerciseFrame.setLayout(new BorderLayout());
+    
         String imagePath = "images/default_image.gif"; // Default path
-
+    
         // Special cases for exercises under Chest, Shoulder, Leg, Shrugs, Biceps,
         // Triceps, and Calf categories
         switch (exercise) {
@@ -509,13 +562,17 @@ public class NoTrainerGymApp {
                 break;
             // Add more cases as needed
         }
-
+    
         ImageIcon imageIcon = new ImageIcon(imagePath);
         JLabel imageLabel = new JLabel(imageIcon);
-
-        exerciseFrame.add(imageLabel);
+    
+        // Add components to the frame
+        exerciseFrame.add(imageLabel, BorderLayout.CENTER);
+        exerciseFrame.add(backButton, BorderLayout.SOUTH);
+    
         exerciseFrame.setVisible(true);
     }
+    
 
     private JPanel createAdminPanel() {
         JPanel adminPanel = new JPanel();
