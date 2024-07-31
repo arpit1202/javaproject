@@ -11,7 +11,7 @@ public class NoTrainerGymApp {
     // MySQL connection variables
     static final String DB_URL = "jdbc:mysql://localhost:3306/notrainer_gym";
     static final String DB_USER = "root"; // Your MySQL username
-    static final String DB_PASS = "geezer4294"; // Your MySQL password
+    static final String DB_PASS = "root"; // Your MySQL password
 
     private JFrame frame;
     private CardLayout cardLayout;
@@ -33,8 +33,8 @@ public class NoTrainerGymApp {
                 new String[] { "Shoulder Press", "Lateral Raise", "Front Raise", "Reverse Fly", "Arnold Press" });
         exerciseSubLists.put("Leg",
                 new String[] { "Squat", "Leg Press", "Leg Extension", "Hamstring Curl", "Calf Raise" });
-        exerciseSubLists.put("Shrugs", new String[] { "Barbell Shrug", "Dumbbell Shrug", "Smith Machine Shrug",
-                "Behind-the-Back Shrug", "Trap Bar Shrug" });
+        exerciseSubLists.put("Shrugs", new String[] { "Barbell Shrug", "Dumbbell Shrug", "Cable Shrug",
+                "Behind-the-Back Shrug", "Incline Shrug" });
         exerciseSubLists.put("Biceps",
                 new String[] { "Bicep Curl", "Hammer Curl", "Preacher Curl", "Concentration Curl", "Cable Curl" });
         exerciseSubLists.put("Triceps", new String[] { "Tricep Extension", "Skull Crusher", "Tricep Dip",
@@ -89,16 +89,15 @@ public class NoTrainerGymApp {
         JButton signUpButton = new JButton("Sign Up");
         JLabel messageLabel = new JLabel();
 
-    //seting color
-    userLabel.setForeground(Color.WHITE);
-    passLabel.setForeground(Color.WHITE);
-    messageLabel.setForeground(Color.WHITE);
+        // seting color
+        userLabel.setForeground(Color.WHITE);
+        passLabel.setForeground(Color.WHITE);
+        messageLabel.setForeground(Color.WHITE);
 
-//size of button
-    Dimension buttonSize = new Dimension(90, 30); // Adjust size as needed
-    loginButton.setPreferredSize(buttonSize);
-    signUpButton.setPreferredSize(buttonSize);
-
+        // size of button
+        Dimension buttonSize = new Dimension(90, 30); // Adjust size as needed
+        loginButton.setPreferredSize(buttonSize);
+        signUpButton.setPreferredSize(buttonSize);
 
         // Adding components to the formPanel
         gbc.gridx = 0;
@@ -120,7 +119,7 @@ public class NoTrainerGymApp {
         formPanel.add(loginButton, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy =-4;
+        gbc.gridy = -4;
         formPanel.add(signUpButton, gbc);
 
         gbc.gridx = 0;
@@ -208,8 +207,8 @@ public class NoTrainerGymApp {
         JButton beginnerButton = new JButton("Beginner");
         JButton trainedButton = new JButton("Trained");
 
-            // changing button text size
-        Font buttonFont = new Font("Serif", Font.BOLD, 24); 
+        // changing button text size
+        Font buttonFont = new Font("Serif", Font.BOLD, 24);
         beginnerButton.setFont(buttonFont);
         trainedButton.setFont(buttonFont);
 
@@ -220,7 +219,7 @@ public class NoTrainerGymApp {
         beginnerButton.addActionListener(e -> showExercisesPanel("Beginner Exercises"));
         trainedButton.addActionListener(e -> showExercisesPanel("Trained Exercises"));
 
-        //CHANGING COLOR TO GOLDEN  
+        // CHANGING COLOR TO GOLDEN
         Color goldenColor = new Color(255, 215, 0); // Golden color
         beginnerButton.setBackground(goldenColor);
         trainedButton.setBackground(goldenColor);
@@ -282,41 +281,39 @@ public class NoTrainerGymApp {
         exercisesFrame.setLayout(new BorderLayout());
         exercisesFrame.setLocationRelativeTo(null); // Center the frame
         exercisesFrame.setResizable(false);
-    
+
         JPanel exercisesPanel = createExercisesPanel();
-    
+
         // Set background color of the exercisesPanel to gold
         Color goldenColor = new Color(255, 215, 0);
         // exercisesPanel.setBackground(goldenColor);
-    
+
         // Add back button to close the exercises frame and return to the user panel
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> exercisesFrame.dispose());
-    
+
         // Set color of back button
         Color buttonTextColor = Color.BLACK;
         backButton.setForeground(goldenColor);
         backButton.setOpaque(true); // Make sure the background is visible
         backButton.setBackground(buttonTextColor);
-    
+
         exercisesFrame.add(exercisesPanel, BorderLayout.CENTER);
         exercisesFrame.add(backButton, BorderLayout.SOUTH);
         exercisesFrame.setVisible(true);
     }
-    
 
     private JPanel createExercisesPanel() {
         JPanel exercisesPanel = new JPanel(new GridLayout(3, 2));
         String[] exercises = { "Chest", "Shoulder", "Biceps", "Triceps", "Leg", "Calf", "Shrugs" };
-    
+
         for (String exercise : exercises) {
             // Create a panel for each button and label
             JPanel buttonPanel = new JPanel(new BorderLayout());
-            
+
             JButton exerciseButton = new JButton();
             exerciseButton.setPreferredSize(new Dimension(200, 90)); // Set the size of the button
-            
-    
+
             // Determine the image path based on the exercise
             String imagePath = "";
             switch (exercise) {
@@ -342,55 +339,54 @@ public class NoTrainerGymApp {
                     imagePath = "images/Shrugs.jpg";
                     break;
             }
-    
+
             // Set the button's background image
             ImageIcon imageIcon = new ImageIcon(imagePath);
             Image image = imageIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
             exerciseButton.setIcon(new ImageIcon(image));
-    
+
             // Set button properties
             exerciseButton.setBorderPainted(false); // Remove button border
             exerciseButton.setContentAreaFilled(false); // Remove default button background
             exerciseButton.setFocusPainted(false); // Remove focus border
-    
+
             // Create a label for the exercise name
             JLabel exerciseLabel = new JLabel(exercise, SwingConstants.CENTER);
             exerciseLabel.setPreferredSize(new Dimension(200, 25)); // Adjust size as needed
             exerciseLabel.setFont(new Font("Serif", Font.BOLD, 20));
             exerciseLabel.setForeground(Color.BLACK); // Set text color (optional)
-    
+
             // Add button and label to the buttonPanel
             buttonPanel.add(exerciseButton, BorderLayout.CENTER);
             buttonPanel.add(exerciseLabel, BorderLayout.SOUTH);
-    
+
             // Add action listener for button
             exerciseButton.addActionListener(e -> showExerciseSubList(exercise));
-    
+
             exercisesPanel.add(buttonPanel);
         }
-    
+
         return exercisesPanel;
     }
-    
-    
+
     // Utility method to get a rounded image
     private Image getRoundedImage(Image image, int radius) {
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
+                BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
-        
+
         // Anti-aliasing for smoother edges
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    
+
         // Draw the rounded rectangle
-        g2.setClip(new RoundRectangle2D.Double(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), radius, radius));
+        g2.setClip(
+                new RoundRectangle2D.Double(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), radius, radius));
         g2.drawImage(image, 0, 0, null);
         g2.dispose();
-    
+
         return bufferedImage;
     }
-    
-    
-    
+
     private void showExerciseSubList(String exercise) {
         JFrame subListFrame = new JFrame(exercise + " Exercises");
         subListFrame.setSize(800, 600);
@@ -398,9 +394,6 @@ public class NoTrainerGymApp {
         subListFrame.setLayout(new GridLayout(5, 1));
         subListFrame.setLocationRelativeTo(null); // Center the frame
         subListFrame.setResizable(false);
-
-        
-        
 
         // Get the sublist items for the selected exercise
         String[] subListItems = exerciseSubLists.getOrDefault(exercise, new String[] {});
@@ -410,19 +403,21 @@ public class NoTrainerGymApp {
             itemButton.addActionListener(e -> showExerciseDetails(item));
             subListFrame.add(itemButton);
 
-            //making button item of list of exercise big
-            Font buttonFont = new Font("Serif", Font.BOLD, 24); 
-        itemButton.setFont(buttonFont);
+            // making button item of list of exercise big
+            Font buttonFont = new Font("Serif", Font.BOLD, 24);
+            itemButton.setFont(buttonFont);
 
-        //CHANGING COLOR TO GOLDEN  
-        Color goldenColor = new Color(255, 215, 0); // Golden color
-        itemButton.setBackground(goldenColor);
-         // Make sure the background is visible
-         itemButton.setOpaque(true);
+            // CHANGING COLOR TO GOLDEN
+            // Golden color is initialized and declared in line 402.
+            Color goldenColor = new Color(255, 215, 0); // Golden color
+            itemButton.setBackground(goldenColor);
+            // Make sure the background is visible
+            itemButton.setOpaque(true);
 
-        Color textColor = Color.BLACK;
-        itemButton.setForeground(textColor);
-        
+            // black color also same in lin 404.
+            Color textColor = Color.BLACK;
+            itemButton.setForeground(textColor);
+
         }
 
         subListFrame.setVisible(true);
@@ -434,145 +429,204 @@ public class NoTrainerGymApp {
         exerciseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         exerciseFrame.setLocationRelativeTo(null); // Center the frame
         exerciseFrame.setResizable(false);
-        
+
         // Create the Back button
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> exerciseFrame.dispose());
-        
 
         Color goldenColor = new Color(255, 215, 0); // Golden color
         backButton.setForeground(goldenColor);
         backButton.setOpaque(true); // Make sure the background is visible
-    
+
         Color textColor = Color.BLACK;
         backButton.setBackground(textColor);
-    
+
         // Set up the layout
         exerciseFrame.setLayout(new BorderLayout());
-    
+
         String imagePath = "images/default_image.gif"; // Default path
-    
-        // Special cases for exercises under Chest, Shoulder, Leg, Shrugs, Biceps,
-        // Triceps, and Calf categories
+        String exerciseDescription = "Description not available."; // Default description
+
+        // Special cases for exercises under various categories
         switch (exercise) {
             case "Bench Press":
                 imagePath = "images/BenchPress.gif";
+                exerciseDescription = "\t   Bench Press\n• targets the pectoral muscles, shoulders, and triceps. \n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Incline Dumbbell Press":
                 imagePath = "images/InclineDumbellPress.gif";
+                exerciseDescription = "\t   Incline Dumbell Press\n• Focuses on the upper chest and front shoulder muscles. \n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Cable Crossover":
                 imagePath = "images/CableCrossOver.gif";
+                exerciseDescription = "\t   Cable Crossover\n• Works the chest muscles through a full range of motion.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Chest Dip":
                 imagePath = "images/ChestDips.gif";
+                exerciseDescription = "\t   Chest Dip\n• Targets the lower chest and triceps.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Pec Deck":
                 imagePath = "images/PecDeck.gif";
+                exerciseDescription = "\t   Pec Deck\n• Isolates the chest muscles, specifically the pectoralis major.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Shoulder Press":
                 imagePath = "images/ShoulderPress.gif";
+                exerciseDescription = "\t   Shoulder Press\n• Strengthens the deltoid muscles and improves shoulder stability.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Lateral Raise":
                 imagePath = "images/LateralRaise.gif";
+                exerciseDescription = "\t   Lateral Raise\n• Targets the middle deltoid, helping to build shoulder width.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Front Raise":
                 imagePath = "images/FrontRaise.gif";
+                exerciseDescription = "\t   Front Raise\n• Focuses on the anterior deltoid, enhancing shoulder shape.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Reverse Fly":
                 imagePath = "images/ReverseFly.gif";
+                exerciseDescription = "\t   Reverse Fly\n• Works the rear deltoids and upper back muscles.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Arnold Press":
                 imagePath = "images/ArnoldPress.gif";
+                exerciseDescription = "\t   Arnold Press\n• Combines a shoulder press with a rotational movement for full shoulder engagement.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Squat":
                 imagePath = "images/Squat.gif";
+                exerciseDescription = "\t   Squat\n• A fundamental lower body exercise targeting quadriceps, hamstrings, and glutes.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Leg Press":
                 imagePath = "images/LegPress.gif";
+                exerciseDescription = "\t   Leg Press\n• An exercise for leg development, focusing on quads, glutes, and hamstrings.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Leg Extension":
                 imagePath = "images/LegExtension.gif";
+                exerciseDescription = "\t   Leg Extension\n• Isolates the quadriceps for targeted muscle development.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Hamstring Curl":
                 imagePath = "images/HamstringCurl.gif";
+                exerciseDescription = "\t   Hamstring Curl\n• Strengthens the hamstrings, crucial for knee stability.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Calf Raise":
                 imagePath = "images/CalfRaise.gif";
+                exerciseDescription = "\t   Calf Raise\n• Develops the calf muscles, enhancing lower leg strength.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Barbell Shrug":
                 imagePath = "images/BarbellShrug.gif";
+                exerciseDescription = "\t   Barbell Shrug\n• Targets the trapezius muscles, improving neck and upper back strength.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Dumbbell Shrug":
                 imagePath = "images/DumbbellShrug.gif";
+                exerciseDescription = "\t   Dumbbell Shrug\n• Similar to barbell shrugs, focusing on trap development.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
-            case "Smith Machine Shrug":
-                imagePath = "images/SmithMachineShrug.jpg";
+            case "Cable Shrug":
+                imagePath = "images/CableShrug.gif";
+                exerciseDescription = "\t   Cable Shrug\n• Allows for controlled shrug movements, targeting the trapezius.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Behind-the-Back Shrug":
                 imagePath = "images/BehindTheBack.gif";
+                exerciseDescription = "\t   Behind-the-Back Shrug\n• Targets the traps from a different angle for balanced development.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
-            case "Trap Bar Shrug":
-                imagePath = "images/TrapBarShrug.png";
+            case "Incline Shrug":
+                imagePath = "images/InclineShrug.gif";
+                exerciseDescription = "\t   Incline Shrug\n• Engages the traps and shoulders using a neutral grip.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Bicep Curl":
                 imagePath = "images/BicepCurl.gif";
+                exerciseDescription = "\t   Bicep Curl\n• Isolates the biceps, enhancing arm strength and size.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Hammer Curl":
                 imagePath = "images/HammerCurl.gif";
+                exerciseDescription = "\t   Hammer Curl\n• Targets the brachialis and forearm muscles for balanced arm development.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Preacher Curl":
                 imagePath = "images/PreacherCurl.gif";
+                exerciseDescription = "\t   Preacher Curl\n• Provides isolation for the biceps, minimizing shoulder involvement.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Concentration Curl":
                 imagePath = "images/ConcentrationCurl.gif";
+                exerciseDescription = "\t   Concentration Curl\n• Focuses on peak contraction of the biceps for enhanced definition.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Cable Curl":
                 imagePath = "images/CableCurl.gif";
+                exerciseDescription = "\t   Cable Curl\n• Provides constant tension on the biceps throughout the movement.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Tricep Extension":
                 imagePath = "images/TricepExtension.gif";
+                exerciseDescription = "\t   Tricep Extension\n• Targets the triceps for improved arm size and strength.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Skull Crusher":
                 imagePath = "images/SkullCrusher.gif";
+                exerciseDescription = "\t   Skull Crusher\n• Isolates the triceps, focusing on the long head.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Tricep Dip":
                 imagePath = "images/TricepDip.gif";
+                exerciseDescription = "\t   Tricep Dip\n• A bodyweight exercise targeting the triceps and chest.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Close Grip Bench Press":
                 imagePath = "images/CloseGripDumbellPress.gif";
+                exerciseDescription = "\t   Close Grip Bench Press\n• Emphasizes the triceps while also working the chest.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Cable Pushdown":
                 imagePath = "images/CablePushdown.gif";
+                exerciseDescription = "\t   Cable Pushdown\n• A tricep exercise using a cable machine for controlled movements.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Standing Calf Raise":
                 imagePath = "images/StandingCalfRaise.gif";
+                exerciseDescription = "\t   Standing Calf Raise\n• Develops the gastrocnemius muscle, enhancing calf size.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Seated Calf Raise":
                 imagePath = "images/SeatedCalfRaise.gif";
+                exerciseDescription = "\t   Seated Calf Raise\n• Targets the soleus muscle for balanced calf development.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Leg Press Calf Raise":
                 imagePath = "images/LegPressCalfRaise.gif";
+                exerciseDescription = "\t   Leg Press Calf Raise\n• Combines leg press and calf raise for a compound lower body workout.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Smith Machine Calf Raise":
                 imagePath = "images/SmithMachineCalfRaise.gif";
+                exerciseDescription = "\t   Smith Machine Calf Raise\n• Uses the Smith machine for controlled calf exercises.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
             case "Single-Leg Calf Raise":
                 imagePath = "images/SingleLegCalfRaise.gif";
+                exerciseDescription = "\t   Single-Leg Calf Raise\n• Isolates each calf muscle for balanced strength and development.\n• Do : 3 sets | 8-10 reps | 1-2min rest per set ";
                 break;
-            // Add more cases as needed
         }
-    
+
         ImageIcon imageIcon = new ImageIcon(imagePath);
         JLabel imageLabel = new JLabel(imageIcon);
-    
+
+        // Create a text area for the exercise description
+        JTextArea descriptionArea = new JTextArea(exerciseDescription);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setOpaque(false);
+        descriptionArea.setEditable(false);
+        descriptionArea.setFocusable(false);
+        descriptionArea.setBackground(UIManager.getColor("Label.background"));
+        descriptionArea.setFont(new Font("Serif", Font.PLAIN, 16));
+        descriptionArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Padding
+
+        // Create a panel to hold the image and description side by side
+        JPanel contentPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+
+        // Scroll pane for image
+        JScrollPane imageScrollPane = new JScrollPane(imageLabel);
+        imageScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        imageScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        // Scroll pane for description
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+        descriptionScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        descriptionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        contentPanel.add(imageScrollPane);
+        contentPanel.add(descriptionScrollPane);
+
         // Add components to the frame
-        exerciseFrame.add(imageLabel, BorderLayout.CENTER);
+        exerciseFrame.add(contentPanel, BorderLayout.CENTER);
         exerciseFrame.add(backButton, BorderLayout.SOUTH);
-    
+
         exerciseFrame.setVisible(true);
     }
-    
 
     private JPanel createAdminPanel() {
         JPanel adminPanel = new JPanel();
