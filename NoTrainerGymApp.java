@@ -201,7 +201,7 @@ public class NoTrainerGymApp {
         gbc.anchor = GridBagConstraints.CENTER;
 
         // Content components
-        JLabel welcomeLabel = new JLabel("Welcome", SwingConstants.CENTER);
+        JLabel welcomeLabel = new JLabel("Welcome To GYM", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Serif", Font.BOLD, 80)); // Bigger letters
         welcomeLabel.setForeground(Color.WHITE);
 
