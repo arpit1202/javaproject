@@ -11,7 +11,7 @@ public class NoTrainerGymApp {
     // MySQL connection variables
     static final String DB_URL = "jdbc:mysql://localhost:3306/notrainer_gym";
     static final String DB_USER = "root"; // Your MySQL username
-    static final String DB_PASS = "root"; // Your MySQL password
+    static final String DB_PASS = "geezer4294"; // Your MySQL password
 
     private JFrame frame;
     private CardLayout cardLayout;
@@ -201,7 +201,7 @@ public class NoTrainerGymApp {
 
         // Content components
         JLabel welcomeLabel = new JLabel("Welcome To GYM", SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 80)); // Bigger letters
+        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 40)); // Bigger letters
         welcomeLabel.setForeground(Color.WHITE);
 
         JButton beginnerButton = new JButton("Beginner");
