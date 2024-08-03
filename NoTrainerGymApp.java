@@ -11,7 +11,7 @@ public class NoTrainerGymApp {
     // MySQL connection variables
     static final String DB_URL = "jdbc:mysql://localhost:3306/notrainer_gym";
     static final String DB_USER = "root"; // Your MySQL username
-    static final String DB_PASS = "geezer4294"; // Your MySQL password
+    static final String DB_PASS = "root"; // Your MySQL password
 
     private JFrame frame;
     private CardLayout cardLayout;
@@ -664,23 +664,17 @@ public class NoTrainerGymApp {
     }
 
     private boolean signUpUser(String username, String password) {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-                PreparedStatement checkStatement = connection
-                        .prepareStatement("SELECT * FROM users WHERE username = ?");
-                PreparedStatement insertStatement = connection
-                        .prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)")) {
-            checkStatement.setString(1, username);
-            ResultSet resultSet = checkStatement.executeQuery();
-            if (resultSet.next()) {
-                return false; // Username already exists
-            }
-            insertStatement.setString(1, username);
-            insertStatement.setString(2, password);
-            insertStatement.executeUpdate();
-            return true; // Sign up successful
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+                PreparedStatement ps = conn
+                        .prepareStatement("INSERT INTO users (username, password, user_type) VALUES (?, ?, ?)")) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ps.setString(3, "user");
+            ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }
